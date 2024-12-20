@@ -1,15 +1,32 @@
 {
-  "rewrites": [
+  "version": 2,
+  "builds": [
     {
-      "source": "/api/:path*",
-      "destination": "/api/:path*"
+      "src": "*.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "images/*",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "*.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "*.css",
+      "use": "@vercel/static"
     }
   ],
-  "redirects": [
+  "routes": [
     {
-      "source": "/shopify/:path*",
-      "destination": "https://bp4kr5-7e.myshopify.com/:path*",
-      "permanent": false
+      "src": "/images/(.*)",
+      "dest": "/images/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
     }
   ]
 }
+
