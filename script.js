@@ -1,8 +1,6 @@
 // Shopify Storefront API and Cart API endpoints
-const shopifyApiUrl = 'https://bp4kr5-7e.myshopify.com/api/2023-01/graphql.json';
-const shopifyCartUrl = 'http://localhost:3000/proxy/cart/add';
-const shopifyCartAddUrl = 'http://localhost:3000/proxy/cart';
-const shopifyApiToken = '2738110aeaf2b2eddb120596562abca1'; // Replace with your token
+const shopifyApiUrl = '/api/shopifyProxy'; // Proxy for Shopify Storefront API
+const shopifyCartAddUrl = '/api/shopifyProxy'; // Proxy for Shopify Cart Add API
 
 // Show notifications
 function showNotification(message, type = 'success') {
@@ -52,11 +50,8 @@ async function fetchProducts() {
     try {
         const response = await fetch(shopifyApiUrl, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Shopify-Storefront-Access-Token': shopifyApiToken,
-            },
-            body: JSON.stringify({ query }),
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ endpoint: '/graphql', query }),
         });
 
         if (!response.ok) {
@@ -64,7 +59,7 @@ async function fetchProducts() {
         }
 
         const data = await response.json();
-        return data.data.products.edges.map(edge => edge.node);
+        return data.products.edges.map(edge => edge.node);
     } catch (error) {
         console.error('Error fetching products:', error);
         showNotification('Failed to load products. Please try again later.', 'danger');
@@ -107,100 +102,15 @@ function viewProduct(productHandle) {
     window.location.href = 'product.html';
 }
 
-// Fetch product details for the product page
-async function fetchProductDetails(handle) {
-    const query = `{
-        product(handle: "${handle}") {
-            id
-            title
-            description
-            images(first: 3) {
-                edges {
-                    node {
-                        src
-                    }
-                }
-            }
-            variants(first: 1) {
-                edges {
-                    node {
-                        id
-                        price {
-                            amount
-                            currencyCode
-                        }
-                    }
-                }
-            }
-        }
-    }`;
-
-    try {
-        const response = await fetch(shopifyApiUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Shopify-Storefront-Access-Token': shopifyApiToken,
-            },
-            body: JSON.stringify({ query }),
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to fetch product details');
-        }
-
-        const data = await response.json();
-        return data.data.product;
-    } catch (error) {
-        console.error('Error fetching product details:', error);
-        showNotification('Failed to load product details. Please try again later.', 'danger');
-        return null;
-    }
-}
-
-// Display product details on the product page
-async function initializeProductPage() {
-    const productHandle = localStorage.getItem('selectedProductHandle');
-    const productDetailsContainer = document.getElementById('product-details');
-
-    if (!productHandle) {
-        productDetailsContainer.innerHTML = '<p>Product not found. Please return to the store.</p>';
-        return;
-    }
-
-    const productData = await fetchProductDetails(productHandle);
-
-    if (!productData) {
-        productDetailsContainer.innerHTML = '<p>Error loading product details. Please try again later.</p>';
-        return;
-    }
-
-    const variant = productData.variants.edges[0]?.node;
-    productDetailsContainer.innerHTML = `
-        <div class="col-md-6">
-            <img src="${productData.images.edges[0]?.node.src}" alt="${productData.title}" class="img-fluid">
-        </div>
-        <div class="col-md-6">
-            <h1>${productData.title}</h1>
-            <p>${productData.description}</p>
-            <p><strong>Price: ${variant?.price.amount || 'N/A'} ${variant?.price.currencyCode || ''}</strong></p>
-            <label for="quantity">Quantity:</label>
-            <input id="quantity" type="number" class="form-control w-25 mb-3" value="1" min="1">
-            <button class="btn btn-primary" onclick="addToShopifyCart('${variant.id}', document.getElementById('quantity').value)">Add to Cart</button>
-        </div>
-    `;
-}
-
 // Add item to Shopify cart
 async function addToShopifyCart(variantId, quantity = 1) {
     try {
-        const response = await fetch('/api/shopifyProxy', {
+        const response = await fetch(shopifyCartAddUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                endpoint: '/cart/add.js', // Shopify endpoint
-                id: variantId,
-                quantity,
+                endpoint: '/cart/add.js',
+                data: { id: variantId, quantity },
             }),
         });
 
@@ -217,16 +127,16 @@ async function addToShopifyCart(variantId, quantity = 1) {
     }
 }
 
-
 // Fetch and display Shopify cart
 async function displayShopifyCart() {
     const cartItemsContainer = document.getElementById('cart-items');
     const cartTotalElement = document.getElementById('cart-total');
 
     try {
-        const response = await fetch(shopifyCartUrl, {
-            method: 'GET',
+        const response = await fetch(shopifyCartAddUrl, {
+            method: 'POST',
             headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ endpoint: '/cart.js' }),
         });
 
         if (!response.ok) {
