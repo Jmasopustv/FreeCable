@@ -194,10 +194,14 @@ async function initializeProductPage() {
 // Add item to Shopify cart
 async function addToShopifyCart(variantId, quantity = 1) {
     try {
-        const response = await fetch(shopifyCartAddUrl, {
+        const response = await fetch('/api/shopifyProxy', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: variantId, quantity }),
+            body: JSON.stringify({
+                endpoint: '/cart/add.js', // Shopify endpoint
+                id: variantId,
+                quantity,
+            }),
         });
 
         if (!response.ok) {
@@ -212,6 +216,7 @@ async function addToShopifyCart(variantId, quantity = 1) {
         showNotification('Failed to add item to cart. Please try again later.', 'danger');
     }
 }
+
 
 // Fetch and display Shopify cart
 async function displayShopifyCart() {
