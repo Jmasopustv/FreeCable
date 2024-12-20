@@ -47,6 +47,7 @@ async function fetchProducts() {
     }`;
 
     try {
+        console.log('Fetching products from proxy...');
         const response = await fetch(shopifyApiProxyUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -54,10 +55,11 @@ async function fetchProducts() {
         });
 
         if (!response.ok) {
-            throw new Error('Failed to fetch products from Shopify');
+            throw new Error(`Failed to fetch products: ${response.status} ${response.statusText}`);
         }
 
         const data = await response.json();
+        console.log('Fetched products:', data);
         return data.data.products.edges.map(edge => edge.node);
     } catch (error) {
         console.error('Error fetching products:', error);
@@ -104,6 +106,7 @@ function viewProduct(productHandle) {
 // Add item to Shopify cart
 async function addToShopifyCart(variantId, quantity = 1) {
     try {
+        console.log(`Adding variant ${variantId} to cart...`);
         const response = await fetch(shopifyApiProxyUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -114,12 +117,13 @@ async function addToShopifyCart(variantId, quantity = 1) {
         });
 
         if (!response.ok) {
-            throw new Error('Failed to add item to cart');
+            throw new Error(`Failed to add item to cart: ${response.status} ${response.statusText}`);
         }
 
         const cart = await response.json();
         updateCartCount(cart.item_count);
         showNotification('Item added to cart.');
+        console.log('Cart updated:', cart);
     } catch (error) {
         console.error('Error adding item to cart:', error);
         showNotification('Failed to add item to cart. Please try again later.', 'danger');
@@ -132,6 +136,7 @@ async function displayShopifyCart() {
     const cartTotalElement = document.getElementById('cart-total');
 
     try {
+        console.log('Fetching cart...');
         const response = await fetch(shopifyApiProxyUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -139,10 +144,12 @@ async function displayShopifyCart() {
         });
 
         if (!response.ok) {
-            throw new Error('Failed to fetch cart');
+            throw new Error(`Failed to fetch cart: ${response.status} ${response.statusText}`);
         }
 
         const cart = await response.json();
+        console.log('Cart data:', cart);
+
         cartItemsContainer.innerHTML = '';
         if (!cart.items.length) {
             cartItemsContainer.innerHTML = '<p>Your cart is empty. <a href="index.html">Continue shopping</a>.</p>';

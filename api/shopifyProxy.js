@@ -2,35 +2,31 @@ const fetch = require('node-fetch');
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
-    res.status(405).json({ error: 'Method Not Allowed' });
-    return;
+    return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
-  const { endpoint, id, quantity } = req.body;
+  const { endpoint, query, data } = req.body;
 
-  if (!endpoint || !id || !quantity) {
-    res.status(400).json({ error: 'Missing required fields' });
-    return;
+  if (!endpoint) {
+    return res.status(400).json({ error: 'Endpoint is required' });
   }
 
-  const shopifyUrl = `https://bp4kr5-7e.myshopify.com${endpoint}`;
-  const shopifyToken = 'YOUR_SHOPIFY_API_TOKEN'; // Replace with your token
+  const url = `https://bp4kr5-7e.myshopify.com${endpoint}`;
+  const headers = {
+    'Content-Type': 'application/json',
+    'X-Shopify-Storefront-Access-Token': '2738110aeaf2b2eddb120596562abca1',
+  };
 
   try {
-    const response = await fetch(shopifyUrl, {
+    const shopifyResponse = await fetch(url, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Shopify-Storefront-Access-Token': shopifyToken,
-      },
-      body: JSON.stringify({ id, quantity }),
+      headers,
+      body: JSON.stringify({ query, ...data }),
     });
 
-    const data = await response.json();
-    res.status(response.status).json(data);
+    const shopifyData = await shopifyResponse.json();
+    res.status(shopifyResponse.status).json(shopifyData);
   } catch (error) {
-    console.error('Error in Shopify Proxy:', error);
-    res.status(500).json({ error: 'Failed to connect to Shopify' });
+    res.status(500).json({ error: 'Internal Server Error', details: error.message });
   }
 };
- 
