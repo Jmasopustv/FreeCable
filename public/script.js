@@ -1,6 +1,5 @@
 // Shopify Storefront API and Cart API endpoints
-const shopifyApiUrl = '/api/shopifyProxy'; // Proxy for Shopify Storefront API
-const shopifyCartAddUrl = '/api/shopifyProxy'; // Proxy for Shopify Cart Add API
+const shopifyApiProxyUrl = '/api/shopifyProxy'; // Proxy for Shopify Storefront and Cart APIs
 
 // Show notifications
 function showNotification(message, type = 'success') {
@@ -48,7 +47,7 @@ async function fetchProducts() {
     }`;
 
     try {
-        const response = await fetch(shopifyApiUrl, {
+        const response = await fetch(shopifyApiProxyUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ endpoint: '/graphql', query }),
@@ -59,7 +58,7 @@ async function fetchProducts() {
         }
 
         const data = await response.json();
-        return data.products.edges.map(edge => edge.node);
+        return data.data.products.edges.map(edge => edge.node);
     } catch (error) {
         console.error('Error fetching products:', error);
         showNotification('Failed to load products. Please try again later.', 'danger');
@@ -105,7 +104,7 @@ function viewProduct(productHandle) {
 // Add item to Shopify cart
 async function addToShopifyCart(variantId, quantity = 1) {
     try {
-        const response = await fetch(shopifyCartAddUrl, {
+        const response = await fetch(shopifyApiProxyUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -133,7 +132,7 @@ async function displayShopifyCart() {
     const cartTotalElement = document.getElementById('cart-total');
 
     try {
-        const response = await fetch(shopifyCartAddUrl, {
+        const response = await fetch(shopifyApiProxyUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ endpoint: '/cart.js' }),
