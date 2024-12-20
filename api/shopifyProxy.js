@@ -29,4 +29,5 @@ module.exports = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error', details: error.message });
   }
-};
+};const shopifyApiProxyUrl = `${window.location.origin}/api/shopifyProxy`;
+

@@ -1,6 +1,5 @@
 // Shopify Storefront API and Cart API endpoints
-const shopifyApiProxyUrl = '/api/shopifyProxy'; // Proxy for Shopify Storefront and Cart APIs
-
+const shopifyApiProxyUrl = '../api/shopifyProxy'; // Proxy for Shopify Storefront and Cart APIs
 // Show notifications
 function showNotification(message, type = 'success') {
     const notification = document.createElement('div');
