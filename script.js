@@ -1,5 +1,7 @@
 // Shopify Storefront API and Cart API endpoints
 const shopifyApiUrl = 'https://bp4kr5-7e.myshopify.com/api/2023-01/graphql.json';
+const shopifyCartUrl = 'https://bp4kr5-7e.myshopify.com/cart.js';
+const shopifyCartAddUrl = 'https://bp4kr5-7e.myshopify.com/cart/add.js';
 const shopifyApiToken = '2738110aeaf2b2eddb120596562abca1'; // Replace with your token
 
 // Show notifications
@@ -101,14 +103,13 @@ function displayProducts(products) {
     });
 }
 
-
 // Navigate to product details page
 function viewProduct(productHandle) {
     localStorage.setItem('selectedProductHandle', productHandle);
     window.location.href = 'product.html';
 }
 
-// Fetch selected product details using its handle
+// Fetch product details for the product page
 async function fetchProductDetails(handle) {
     const query = `
         {
@@ -149,7 +150,7 @@ async function fetchProductDetails(handle) {
         });
 
         if (!response.ok) {
-            throw new Error('Failed to fetch product details from Shopify');
+            throw new Error('Failed to fetch product details');
         }
 
         const data = await response.json();
@@ -194,11 +195,10 @@ async function initializeProductPage() {
     `;
 }
 
-
 // Add item to Shopify cart
 async function addToShopifyCart(variantId, quantity = 1) {
     try {
-        const response = await fetch('/cart/add.js', {
+        const response = await fetch(shopifyCartAddUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id: variantId, quantity }),
@@ -223,7 +223,7 @@ async function displayShopifyCart() {
     const cartTotalElement = document.getElementById('cart-total');
 
     try {
-        const response = await fetch('/cart.js', {
+        const response = await fetch(shopifyCartUrl, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         });
@@ -263,7 +263,7 @@ async function displayShopifyCart() {
     }
 }
 
-// Update cart count in header
+// Update cart count in the header
 function updateCartCount(count = 0) {
     const cartCountElement = document.getElementById('cart-count');
     if (cartCountElement) {
