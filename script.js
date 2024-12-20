@@ -18,30 +18,28 @@ function showNotification(message, type = 'success') {
 
 // Fetch all products using Shopify Storefront API
 async function fetchProducts() {
-    const query = `
-        {
-            products(first: 20) {
-                edges {
-                    node {
-                        id
-                        handle
-                        title
-                        description
-                        images(first: 1) {
-                            edges {
-                                node {
-                                    src
-                                }
+    const query = `{
+        products(first: 20) {
+            edges {
+                node {
+                    id
+                    handle
+                    title
+                    description
+                    images(first: 1) {
+                        edges {
+                            node {
+                                src
                             }
                         }
-                        variants(first: 1) {
-                            edges {
-                                node {
-                                    id
-                                    price {
-                                        amount
-                                        currencyCode
-                                    }
+                    }
+                    variants(first: 1) {
+                        edges {
+                            node {
+                                id
+                                price {
+                                    amount
+                                    currencyCode
                                 }
                             }
                         }
@@ -49,7 +47,7 @@ async function fetchProducts() {
                 }
             }
         }
-    `;
+    }`;
 
     try {
         const response = await fetch(shopifyApiUrl, {
@@ -111,33 +109,31 @@ function viewProduct(productHandle) {
 
 // Fetch product details for the product page
 async function fetchProductDetails(handle) {
-    const query = `
-        {
-            product(handle: "${handle}") {
-                id
-                title
-                description
-                images(first: 3) {
-                    edges {
-                        node {
-                            src
-                        }
+    const query = `{
+        product(handle: "${handle}") {
+            id
+            title
+            description
+            images(first: 3) {
+                edges {
+                    node {
+                        src
                     }
                 }
-                variants(first: 1) {
-                    edges {
-                        node {
-                            id
-                            price {
-                                amount
-                                currencyCode
-                            }
+            }
+            variants(first: 1) {
+                edges {
+                    node {
+                        id
+                        price {
+                            amount
+                            currencyCode
                         }
                     }
                 }
             }
         }
-    `;
+    }`;
 
     try {
         const response = await fetch(shopifyApiUrl, {
@@ -250,7 +246,6 @@ async function displayShopifyCart() {
                         <h5>${item.title}</h5>
                         <p>$${(item.price / 100).toFixed(2)} x ${item.quantity} = $${itemTotal.toFixed(2)}</p>
                     </div>
-                    <button class="btn btn-danger btn-sm" onclick="removeFromShopifyCart(${item.id})">Remove</button>
                 </div>
             `;
             cartItemsContainer.innerHTML += cartItem;
