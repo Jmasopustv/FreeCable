@@ -12,11 +12,11 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",  // Route all `/api` requests to the `api` folder
+      "src": "/api/(.*)",
       "dest": "/api/$1"
     },
     {
-      "src": "/(.*)", // Route static requests to the `public` folder
+      "src": "/(.*)",
       "dest": "/public/$1"
     }
   ]
