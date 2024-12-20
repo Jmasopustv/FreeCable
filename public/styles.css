@@ -5,7 +5,7 @@ body {
     margin: 0;
     padding: 0;
     color: #333;
-    background: url('Images/IMG_3430.JPG') no-repeat center center fixed;
+    background: url('assets/IMG_3430.JPG') no-repeat center center fixed;
     background-size: cover;
     backdrop-filter: blur(3px); /* Slight blur for text readability */
 }

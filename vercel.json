@@ -1,41 +1,15 @@
 {
-    "version": 2,
-    "builds": [
-      {
-        "src": "index.html",
-        "use": "@vercel/static"
-      }
-    ],
-    "routes": [
-      {
-        "src": "/api/(.*)",
-        "dest": "/api/proxy.js"
-      }
-    ],
-    "env": {
-      "SHOPIFY_API_URL": "https://bp4kr5-7e.myshopify.com/api/2023-01/graphql.json",
-      "SHOPIFY_API_TOKEN": "2738110aeaf2b2eddb120596562abca1"
-    },
-    "headers": [
-      {
-        "source": "/api/(.*)",
-        "headers": [
-          {
-            "key": "Access-Control-Allow-Origin",
-            "value": "*"
-          },
-          {
-            "key": "Access-Control-Allow-Methods",
-            "value": "GET, POST, OPTIONS"
-          },
-          {
-            "key": "Access-Control-Allow-Headers",
-            "value": "Content-Type, Authorization"
-          }
-        ]
-      }
-    ],
-    "cleanUrls": true,
-    "trailingSlash": false
-  }
-  
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "/api/:path*"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/shopify/:path*",
+      "destination": "https://bp4kr5-7e.myshopify.com/:path*",
+      "permanent": false
+    }
+  ]
+}

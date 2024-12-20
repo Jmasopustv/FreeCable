@@ -1,0 +1,14 @@
+{
+  "name": "free-cable",
+  "version": "1.0.0",
+  "description": "A Shopify-integrated site for Free Cable.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'No build step needed'",
+    "start": "vercel dev"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.0"
+  }
+}

@@ -1,7 +1,7 @@
 // Shopify Storefront API and Cart API endpoints
 const shopifyApiUrl = 'https://bp4kr5-7e.myshopify.com/api/2023-01/graphql.json';
-const shopifyCartUrl = 'https://bp4kr5-7e.myshopify.com/cart.js';
-const shopifyCartAddUrl = 'https://bp4kr5-7e.myshopify.com/cart/add.js';
+const shopifyCartUrl = 'http://localhost:3000/proxy/cart/add';
+const shopifyCartAddUrl = 'http://localhost:3000/proxy/cart';
 const shopifyApiToken = '2738110aeaf2b2eddb120596562abca1'; // Replace with your token
 
 // Show notifications
