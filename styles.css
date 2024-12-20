@@ -1,0 +1,166 @@
+/* General Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    background: url('Images/IMG_3430.JPG') no-repeat center center fixed;
+    background-size: cover;
+    backdrop-filter: blur(3px); /* Slight blur for text readability */
+}
+
+/* Header */
+header {
+    background: rgba(34, 34, 34, 0.9); /* Semi-transparent for layering effect */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    border-radius: 0 0 15px 15px; /* Rounded edges for a bubbly feel */
+}
+header .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+header h1 {
+    font-size: 2rem;
+    margin: 0;
+    color: #f76c6c; /* Vibrant coral for branding */
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+}
+header nav a {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s ease-in-out, transform 0.2s;
+}
+header nav a:hover {
+    color: #ffcc4d; /* Yellow highlight */
+    transform: scale(1.1); /* Bouncy effect */
+}
+header .btn-outline-light {
+    border-color: #f76c6c;
+    color: #f76c6c;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+header .btn-outline-light:hover {
+    background-color: #f76c6c;
+    color: #fff;
+}
+
+/* Main Banner */
+section.bg-light {
+    background: rgba(255, 255, 255, 0.85); /* Transparent overlay for text clarity */
+    padding: 60px 20px;
+    text-align: center;
+    border-radius: 15px;
+    margin: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+section.bg-light h2 {
+    font-size: 2.8rem;
+    color: #222;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+}
+section.bg-light p {
+    font-size: 1.3rem;
+    color: #555;
+    line-height: 1.8;
+}
+
+/* Featured Products */
+#product-list .card {
+    background: rgba(255, 255, 255, 0.95); /* Slight transparency */
+    border: none;
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+#product-list .card:hover {
+    transform: scale(1.05); /* Slight zoom effect */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+#product-list .card img {
+    border-radius: 15px 15px 0 0; /* Matches card corners */
+}
+#product-list .card-title {
+    font-size: 1.5rem;
+    color: #333;
+    font-weight: bold;
+}
+#product-list .card-text {
+    font-size: 1rem;
+    color: #666;
+}
+
+/* Footer */
+footer {
+    background: rgba(34, 34, 34, 0.95);
+    color: #ccc;
+    padding: 20px 0;
+    text-align: center;
+    border-radius: 15px 15px 0 0;
+}
+footer a {
+    color: #f76c6c;
+    text-decoration: none;
+}
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* Buttons */
+button, .btn {
+    border-radius: 20px; /* Rounded buttons for bubbly style */
+    padding: 10px 20px;
+    transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+button:hover, .btn:hover {
+    transform: scale(1.05);
+    background-color: #ffcc4d; /* Bright yellow highlight */
+    color: #222;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    header .container {
+        flex-direction: column;
+        text-align: center;
+    }
+    header nav {
+        margin: 10px 0;
+    }
+    section.bg-light h2 {
+        font-size: 2.2rem;
+    }
+    section.bg-light p {
+        font-size: 1.1rem;
+    }
+    #product-list .card {
+        margin-bottom: 20px;
+    }
+}
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.8rem;
+    }
+    header nav a {
+        font-size: 0.9rem;
+    }
+    section.bg-light h2 {
+        font-size: 1.8rem;
+    }
+    section.bg-light p {
+        font-size: 0.9rem;
+    }
+    #product-list .card-title {
+        font-size: 1.2rem;
+    }
+    #product-list .card-text {
+        font-size: 0.9rem;
+    }
+}
